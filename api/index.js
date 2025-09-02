@@ -64,26 +64,33 @@ app.get("/", async (req, res) => {
     let sections = [];
 
     // Select all panel-info divs
-    $(".panel-info").each((i, panel) => {
-      const panelTitle = $(panel).find(".panel-heading .panel-title").text().trim();
-      let items = [];
+  // Select all panel-info divs
+$(".panel-info").each((i, panel) => {
+  const panelTitle = $(panel).find(".panel-heading .panel-title").text().trim();
+  let items = [];
 
-      // Get all links inside this panel
-      $(panel).find(".panel-body a.question").each((j, link) => {
-        const url = $(link).attr("href");
-        const text = $(link).text().trim();
-        if (url && text) {
-          items.push({ text, url });
-        }
-      });
+  // Get all links inside this panel
+  $(panel).find(".panel-body a.question").each((j, link) => {
+    const url = $(link).attr("href");
+    const text = $(link).text().trim();
+    if (url && text) {
+      items.push({ text, url });
+    }
+  });
 
-      if (panelTitle && items.length > 0) {
-        sections.push({ title: panelTitle, items });
-      }
-    });
+  // Skip unwanted categories (example: "All Doctors")
+  if (panelTitle.toLowerCase().includes("all doctor")) {
+    console.log(`Skipping category: ${panelTitle}`);
+    return; // don’t push into sections
+  }
 
-    // Build HTML
-    let html = `
+  if (panelTitle && items.length > 0) {
+    sections.push({ title: panelTitle, items });
+  }
+});
+
+// Build HTML
+let html = `
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -126,30 +133,33 @@ app.get("/", async (req, res) => {
     <h1 class="mb-5 text-center">NPINO Healthcare Providers</h1>
 `;
 
-    // Loop through sections
-    sections.forEach(section => {
-      html += `<h2 class="section-title">${section.title}</h2><div class="row g-3">`;
+sections.forEach(section => {
+  html += `<h2 class="section-title">${section.title}</h2><div class="row g-3">`;
 
-      section.items.forEach(item => {
-        // Generate a random pastel color for each card
-        const r = Math.floor(Math.random() * 127 + 127);
-        const g = Math.floor(Math.random() * 127 + 127);
-        const b = Math.floor(Math.random() * 127 + 127);
-        const bgColor = `rgb(${r},${g},${b})`;
-
-        html += `
-          <a href="/category?url=${encodeURIComponent(item.url)}" class="col-md-3 category-card" style="background-color: ${bgColor}"> ${item.text} </a>
-        `;
-      });
-
-      html += `</div>`; // close row
-    });
+  section.items.forEach(item => {
+    const r = Math.floor(Math.random() * 127 + 127);
+    const g = Math.floor(Math.random() * 127 + 127);
+    const b = Math.floor(Math.random() * 127 + 127);
+    const bgColor = `rgb(${r},${g},${b})`;
 
     html += `
+      <a href="/category?url=${encodeURIComponent(item.url)}" 
+         class="col-md-3 category-card" 
+         style="background-color: ${bgColor}">
+         ${item.text}
+      </a>
+    `;
+  });
+
+  html += `</div>`; // close row
+});
+
+html += `
   </div>
 </body>
 </html>
 `;
+
 
     res.send(html);
   } catch (error) {
