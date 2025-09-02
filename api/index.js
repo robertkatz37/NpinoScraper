@@ -64,8 +64,13 @@ app.get("/", async (req, res) => {
     let sections = [];
 
     // Select all panel-info divs
-  // Select all panel-info divs
 $(".panel-info").each((i, panel) => {
+  // Skip the first category
+  if (i === 0) {
+    console.log("Skipping first category");
+    return; // skip this iteration
+  }
+
   const panelTitle = $(panel).find(".panel-heading .panel-title").text().trim();
   let items = [];
 
@@ -78,16 +83,11 @@ $(".panel-info").each((i, panel) => {
     }
   });
 
-  // Skip unwanted categories (example: "All Doctors")
-  if (panelTitle.toLowerCase().includes("all doctor")) {
-    console.log(`Skipping category: ${panelTitle}`);
-    return; // don’t push into sections
-  }
-
   if (panelTitle && items.length > 0) {
     sections.push({ title: panelTitle, items });
   }
 });
+
 
 // Build HTML
 let html = `
