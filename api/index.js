@@ -404,5 +404,5 @@ app.get("/state", async (req, res) => {
     res.status(500).send("Error scraping state: " + error.message);
   }
 });
+
 module.exports = app;
-module.exports.handler = serverless(app);
