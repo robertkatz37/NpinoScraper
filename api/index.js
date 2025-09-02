@@ -356,7 +356,7 @@ app.get("/state", async (req, res) => {
         <body>
           <h2>Providers in ${stateUrl}</h2>
           <p><b>Total Providers Detected:</b> ${allProviders.length}</p>
-          /*<button class="btn" onclick="downloadCSV()">Download CSV</button>*/
+          <button style="display: none;"class="btn" onclick="downloadCSV()">Download CSV</button>
           <table>
             <thead>
               <tr>
