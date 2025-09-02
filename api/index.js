@@ -201,7 +201,7 @@ app.get("/category", async (req, res) => {
     .state-card {
       border-radius: 12px;
       padding: 20px;
-      color: #ooo;
+      color: #000;
       text-align: center;
       transition: transform 0.3s, filter 0.3s;
       cursor: pointer;
