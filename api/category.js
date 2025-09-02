@@ -60,4 +60,4 @@ module.exports = async (req, res) => {
     res.status(500).send(`<h2>Error scraping category</h2><pre>${String(err && err.message ? err.message : err)}</pre>`);
   }
 };
-module.exports = app;
+module.exports = serverless(app);
