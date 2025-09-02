@@ -65,12 +65,6 @@ app.get("/", async (req, res) => {
 
     // Select all panel-info divs
 $(".panel-info").each((i, panel) => {
-  // Skip the first category
-  if (i === 0) {
-    console.log("Skipping first category");
-    return; // skip this iteration
-  }
-
   const panelTitle = $(panel).find(".panel-heading .panel-title").text().trim();
   let items = [];
 
@@ -78,6 +72,13 @@ $(".panel-info").each((i, panel) => {
   $(panel).find(".panel-body a.question").each((j, link) => {
     const url = $(link).attr("href");
     const text = $(link).text().trim();
+
+    // Skip the "All Doctors" link
+    if (text.toLowerCase() === "all doctors") {
+      console.log('Skipping link: All Doctors');
+      return; // skip this link
+    }
+
     if (url && text) {
       items.push({ text, url });
     }
