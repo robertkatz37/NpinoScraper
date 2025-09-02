@@ -201,7 +201,7 @@ app.get("/category", async (req, res) => {
     .state-card {
       border-radius: 12px;
       padding: 20px;
-      color: #fff;
+      color: #ooo;
       text-align: center;
       transition: transform 0.3s, filter 0.3s;
       cursor: pointer;
@@ -217,7 +217,7 @@ app.get("/category", async (req, res) => {
       transform: translateY(-5px);
       filter: brightness(1.2);
       text-decoration: none;
-      color: #fff;
+      color: #000;
     }
   </style>
 </head>
@@ -227,19 +227,13 @@ app.get("/category", async (req, res) => {
     <div class="row g-3">
 `;
 
-// Define a fixed color palette
-const colors = [
-  '#08326B', '#FF6F61', '#6B8E23', '#FFB347',
-  '#FF7F50', '#20B2AA', '#9370DB', '#F08080'
-];
-
 states.forEach((st, index) => {
+     const r = Math.floor(Math.random() * 127 + 127);
+    const g = Math.floor(Math.random() * 127 + 127);
+    const b = Math.floor(Math.random() * 127 + 127);
+    const bgColor = `rgb(${r},${g},${b})`;
   let stateUrl = st.url;
   stateUrl = normalizeUrl(stateUrl);
-
-  // Pick color from palette cyclically
-  const bgColor = colors[index % colors.length];
-
   html += `
     <a href="/state?url=${encodeURIComponent(stateUrl)}" class="col-md-3 state-card" style="background-color: ${bgColor}">
       ${st.text}
